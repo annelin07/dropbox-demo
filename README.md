@@ -1,6 +1,4 @@
-## Dropbox [(raw)](https://gist.github.com/CrabDude/040af9c1b93e350608ff/raw)
-
-This is a basic Dropbox clone to sync files across multiple remote folders.
+## Dropbox 
 
 Time spent: `<6 hours>`
 
@@ -9,11 +7,11 @@ Time spent: `<6 hours>`
 #### Required
 
 - [done] Client can make GET requests to get file or directory contents
-- [done ] Client can make HEAD request to get just the GET headers 
-- [done ] Client can make PUT requests to create new directories and files with content
-- [done ] Client can make POST requests to update the contents of a file
-- [done ] Client can make DELETE requests to delete files and folders
-- [done ] Server will serve from `--dir` or cwd as root
+- [done] Client can make HEAD request to get just the GET headers 
+- [done] Client can make PUT requests to create new directories and files with content
+- [done] Client can make POST requests to update the contents of a file
+- [done] Client can make DELETE requests to delete files and folders
+- [done] Server will serve from `--dir` or cwd as root
 - [ ] Client will sync from server over TCP to cwd or CLI `dir` argument
 
 ### Optional
