@@ -28,20 +28,17 @@ if (NODE_ENV === 'development') {
 
 let tcpServer = net.createServer()
 tcpServer.listen(9838)
-tcpServer.on('connection', function(socket) { //This is a standard net.Socket
+tcpServer.on('connection', (socket) => { //This is a standard net.Socket
     console.log('TcpServer on connection')
     socket = new JsonSocket(socket) //Now we've decorated the net.Socket to be a JsonSocket
 
-    eventEmitter.on('tcpMessageEvent', function(tcpMessageData) {
+    eventEmitter.on('tcpMessageEvent', (tcpMessageData) => {
         console.log('Send message to tcpClient', tcpMessageData)
         socket.sendMessage(tcpMessageData)
     })
 
-    socket.on('message', function(message) {
+    socket.on('message', (message) => {
         console.log('Received message from tcpClient', message)
-
-        // var result = message.a + message.b
-        // socket.sendEndMessage({result: result})
     })
 })
 
@@ -61,8 +58,8 @@ app.head('*', setFileMeta, sendHeaders, (req, res) => res.end())
 function sendToTcpClient(updateType, req) {
     let tcpMessageData = {
         "action": updateType,
-        "path": req.filePath,
-        "type": req.stat.isDirectory() ? "dir" : "file",
+        "path": req.url,
+        "type": req.isDir ? "dir" : "file",
         "contents": updateType === "delete" ? null : new Buffer(req.read()).toString('base64'),
         "updated": Date.now()
     }
@@ -85,19 +82,8 @@ app.delete('*', setFileMeta, (req, res, next) => {
     }().catch(next)
 })
 
+// PUT for update
 app.put('*', setFileMeta, setDirDetails, (req, res, next) => {
-    async ()=>{
-        if (req.stat) return res.status(405).send("File exists")
-        await mkdirp.promise(req.dirPath)
-        if (!req.isDir) req.pipe(fs.createWriteStream(req.filePath))
-        res.end()
-
-        sendToTcpClient("put", req)
-    }().catch(next)
-
-})
-
-app.post('*', setFileMeta, setDirDetails, (req, res, next) => {
     async ()=>{
         if (!req.stat) return res.status(405).send("File does not exists")
         if (req.isDir) return res.status(405).send("Path is a directory")
@@ -106,8 +92,21 @@ app.post('*', setFileMeta, setDirDetails, (req, res, next) => {
         req.pipe(fs.createWriteStream(req.filePath))
         res.end()
 
-        sendToTcpClient("post", req)
+        sendToTcpClient("put", req)
    }().catch(next)
+
+})
+
+// POST for create
+app.post('*', setFileMeta, setDirDetails, (req, res, next) => {
+    async ()=>{
+        if (req.stat) return res.status(405).send("File exists")
+        await mkdirp.promise(req.dirPath)
+        if (!req.isDir) req.pipe(fs.createWriteStream(req.filePath))
+        res.end()
+
+        sendToTcpClient("post", req)
+    }().catch(next)
 })
 
 function setDirDetails(req, res, next) {
