@@ -10,8 +10,8 @@ let net = require('net')
 let JsonSocket = require('json-socket')
 require('songbird')
 
-console.log(argv)
 let socket = new JsonSocket(new net.Socket()) //Decorate a standard net.Socket with JsonSocket
+console.log("Socket client connecting to port 127:0.0.1:9838")
 socket.connect(9838, '127.0.0.1')
 
 function handleMessage(message) {

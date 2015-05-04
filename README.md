@@ -1,6 +1,6 @@
 ## Dropbox 
 
-Time spent: `<6 hours>`
+Time spent: `<15 hours>`
 
 ### Features
 
@@ -8,11 +8,11 @@ Time spent: `<6 hours>`
 
 - [done] Client can make GET requests to get file or directory contents
 - [done] Client can make HEAD request to get just the GET headers 
-- [done] Client can make PUT requests to create new directories and files with content
-- [done] Client can make POST requests to update the contents of a file
+- [done] Client can make POST requests to create new directories and files with content
+- [done] Client can make PUT requests to update the contents of a file
 - [done] Client can make DELETE requests to delete files and folders
 - [done] Server will serve from `--dir` or cwd as root
-- [ ] Client will sync from server over TCP to cwd or CLI `dir` argument
+- [done] Client will sync from server over TCP to cwd or CLI `dir` argument
 
 ### Optional
 
@@ -25,6 +25,7 @@ Time spent: `<6 hours>`
 - [ ] User can connect to the server using an FTP client
 
 
-### Walkthrough
+### Walkthrough (Note: I use POST to create, PUT to update as opposed in the assignment video walkthrogh)
 
-![Video Walkthrough](https://vimeo.com/user39231823/videos)
+![Video Walkthrough](https://github.com/annelin07/dropbox-demo/blob/master/dropboxWT.gif)
+

@@ -27,6 +27,7 @@ if (NODE_ENV === 'development') {
 }
 
 let tcpServer = net.createServer()
+console.log('TCP Server LISTENING @ 127:0.0.1:9838')
 tcpServer.listen(9838)
 tcpServer.on('connection', (socket) => { //This is a standard net.Socket
     console.log('TcpServer on connection')
@@ -66,7 +67,7 @@ function sendToTcpClient(updateType, req) {
     eventEmitter.emit('tcpMessageEvent', tcpMessageData)
 }
 
-app.delete('*', setFileMeta, (req, res, next) => {
+app.delete('*', setFileMeta, setDirDetails, (req, res, next) => {
     async ()=> {
         if (!req.stat) {
             return res.status(400).send("Invalid Path")
